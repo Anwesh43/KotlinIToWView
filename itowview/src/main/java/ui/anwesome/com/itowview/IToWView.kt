@@ -114,4 +114,28 @@ class IToWView(ctx : Context) : View(ctx) {
             state.startUpdating(startcb)
         }
     }
+
+    data class Renderer(var view : IToWView) {
+
+        private val animator : Animator = Animator(view)
+
+        private val iToW : IToW = IToW(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            iToW.draw(canvas, paint)
+            animator.animate {
+                iToW.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            iToW.startUpdating {
+                animator.start()
+            }
+        }
+
+    }
 }

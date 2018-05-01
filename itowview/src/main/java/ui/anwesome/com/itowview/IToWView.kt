@@ -85,28 +85,30 @@ class IToWView(ctx : Context) : View(ctx) {
     data class IToW (var i : Int, val state : State = State()) {
 
         fun draw(canvas : Canvas, paint : Paint) {
+            val deg : Float = 15f
             val w : Float = canvas.width.toFloat()
             val h : Float = canvas.height.toFloat()
-            val size : Float = Math.min(w, h)/4
+            val size : Float = Math.min(w, h)/2
             val updatedSize : Float = (size/2) * state.scales[0]
+            val kx : Float = (size) * Math.sin(deg * Math.PI/180).toFloat()
             paint.strokeWidth = size/15
             paint.strokeCap = Paint.Cap.ROUND
             paint.color = Color.parseColor("#311B92")
+            canvas.save()
+            canvas.translate(w/2, h/2 + size/2)
             for (i in 0..1) {
-                canvas.save()
-                canvas.translate(w/2, h/2)
                 for (j in 0..1) {
                     canvas.save()
-                    canvas.translate(size/2 * (1 - 2 * i) * state.scales[1], 0f)
-                    canvas.rotate(30f * (1 - 2 * j) * state.scales[2])
+                    canvas.translate(kx * (1 - 2 * i) * state.scales[1], 0f)
+                    canvas.rotate(deg * (1 - 2 * j) * state.scales[2])
                     canvas.save()
                     canvas.translate(0f, -size/2)
                     canvas.drawLine(0f, -updatedSize, 0f, updatedSize, paint)
                     canvas.restore()
                     canvas.restore()
                 }
-                canvas.restore()
             }
+            canvas.restore()
         }
 
         fun update(stopcb : (Float) -> Unit) {

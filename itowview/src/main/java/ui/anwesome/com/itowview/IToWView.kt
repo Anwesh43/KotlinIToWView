@@ -4,6 +4,7 @@ package ui.anwesome.com.itowview
  * Created by anweshmishra on 01/05/18.
  */
 
+import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.MotionEvent
@@ -137,6 +138,14 @@ class IToWView(ctx : Context) : View(ctx) {
             iToW.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : IToWView  {
+            val view : IToWView = IToWView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
